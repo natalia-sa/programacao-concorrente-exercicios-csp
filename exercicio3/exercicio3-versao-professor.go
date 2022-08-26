@@ -1,0 +1,1 @@
+// tem um for no main apenas para ir printando as coisas, entao eles aproveitam o fluxo do main para fazer esse serviço
