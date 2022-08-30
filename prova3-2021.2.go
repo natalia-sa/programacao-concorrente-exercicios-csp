@@ -46,14 +46,12 @@ func main() {
 	}
 
 	// começa o trabalho
-	requests_ch := make(chan request, max_workers)
+	requests_ch := make(chan request, len(requests)) // verificar se no pseudocodigo esse canal foi criado com esse len msm
 	join_ch := make(chan int)
 
 	for i := 0; i < len(requests); i ++ {
 		requests_ch <-requests[i]
 	}
-
-	close(requests_ch)
 
 	for i := 0; i < max_workers; i++ {
 		go exec(requests, requests_ch, join_ch)
@@ -63,7 +61,7 @@ func main() {
 		<-join_ch
 	}
 	// originalmente o close tava aq
-	close(join_ch)
+	close(requests_ch)
 	fmt.Printf("done")
 }
 
@@ -82,16 +80,16 @@ func exec(requests []request, requests_ch chan request, join_ch chan int) {
 	result_ch := make(chan int)
 
 	for request := range requests_ch {
-		fmt.Printf("Processing request: : %d", request.id)
+		fmt.Printf("request %d: Processing request\n", request.id)
+
 		for {
-			fmt.Printf("checking if pred is free")
+			fmt.Printf("request %d: checking if pred is free\n", request.id)
 			time.Sleep(time.Duration(2) * time.Second)
 			
 			pred := request_func(request.pred_id, requests)
-			// o que acontece se n tiver pred?
-			if (pred.id != -1 && pred.executed) {
-
-				fmt.Printf("%d its free, ready to exec", pred.id)
+			fmt.Printf("request %d: %d is executed? %d\n", request.id, pred.id, pred.executed)
+			if pred.id == -1 || pred.executed {
+				fmt.Printf("request %d: %d its free, ready to exec\n", request.id, pred.id)
 				time.Sleep(time.Duration(2) * time.Second)
 
 				go do_exec(result_ch, request)
@@ -105,21 +103,24 @@ func exec(requests []request, requests_ch chan request, join_ch chan int) {
 				case <-result_ch:
 					result = 0
 				}
-
-				join_ch <- result
+				// nao ta atualizando o statys das requests
+				// talvez na prova essa linha estivesse depois do join_ch
 				request.executed = true
-				break // foi o que faltou colocar na prova
+				join_ch <- result
+				break // foi o que faltou na prova
 			}
-
-			
 		}
 	}
 }
+
 
 func do_exec(result_ch chan int, req request) {
 	v := 2
 	randomNumber := rand.Intn(6)
 	time.Sleep(time.Duration(randomNumber) * time.Second)
-	fmt.Printf("%d executed", req.id)
+	fmt.Printf("%d executed\n", req.id)
 	result_ch <- v
 }
+
+// talvez ele quisesse que toda routine ficasse rodando verificando se havia uma request livre para ser executada
+// esse codigo so n cumpre com um requisito que é as threads nao ficarem ociosas
