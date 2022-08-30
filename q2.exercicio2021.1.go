@@ -15,9 +15,7 @@ func main() {
 	for i := range channels {
 		channels[i] = make(chan int, 1)
 	}
-	// n = 5 chanel = [[], [10], [], [], [], []]
-	// i = 0 
-	// = 1
+
 	for i := 0; i < n; i++ {
 		go sleeper(chJoin, channels[i], channels[(i+1)%n])
 	}
@@ -45,4 +43,4 @@ func sleeper(chJoin chan<- int, chIn <-chan int, chOut chan<- int) {
 	chJoin <- 1
 }
 
-//  e se a ultima thread acabar antes das outras?
+//  e se a ultima thread acabar antes das outras? esse codigo esta incorreto

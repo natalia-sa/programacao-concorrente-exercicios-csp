@@ -1,4 +1,9 @@
-// em nenhum momenyo era dito que tipo de int eec retornava
+// prova periodo 2021.2: implementar as funções handle e exec de forma que handle recebe uma lista de requests
+// e um numero maximo de workers e deve criar routines para processar essas requisições.
+// cada requisição, exceto a primeira, tem um pai e so pode executar quando o pai tiver executado.
+// routines nao devem ficar ociosas e o maximo de routines estabelecido deve ser seguido
+// caso o exec demore mais de 5 segundos para executar a requisição deve ser descartada e o resultado -1 deve ser retornado
+// caso a requisição seja processada com sucesso o reusltado 1 deve ser retornado.
 package main
 
 import (
