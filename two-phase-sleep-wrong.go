@@ -1,3 +1,4 @@
+// ATENCAO: esse codigo está incorreto
 package main
 
 import (
