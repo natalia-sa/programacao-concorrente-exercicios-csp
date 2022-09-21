@@ -18,10 +18,10 @@ func main() {
 
 	join<-1
 }
-// eu preciso fechar o canal? é uma opção. apos close n pode ter mais produce mais ainda pode ter receive
-// mas assim o programa n acaba pois valores lixo ficam sendo recebidos pelas threads: liveLock
-// qnd usa o for each precisa fechar o canal ainda? sim, tme que usar
-// porem tem que sempre lembrar de fechar o main se n da deadlock nele
+// precisa fechar o canal? é uma opção. apos close n pode ter mais produce, mas ainda pode ter receive
+// mas assim o programa n acaba pois valores "lixo" ficam sendo recebidos pelas threads: liveLock
+// qnd usa o for each precisa fechar o canal ainda? sim
+// lembrar de fechar o main se n da deadlock nele
 // fazer send num canal fechado da erro
 func generateRandomString(general chan string) {
 	for i:= 0; i < 100; i++{
