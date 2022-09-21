@@ -5,8 +5,8 @@ import (
 	"math/rand"
 	"time"
 )
-// so com for nas threads filhas o main ainda acaba muito rapido, mata elas e portanto nada acontece
-// o programa so da deadlock quando nenhuma thread avança? pq qnd a manipulação do canal era direto no main dava erro
+// so com for nas threads filhas o main ainda acaba muito rapido, mata elas e, portanto, nada acontece
+// o programa so da deadlock quando nenhuma thread avança
 func main() {
 	number := make(chan int)
 	join := make(chan int)
